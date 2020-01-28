@@ -15,6 +15,7 @@ public class ThreadedSort {
 			Integer [] temp = {x};
 			control.add(temp);
 		}
+		System.out.println(control.toString());
 	}
 	
 	//work for each thread, up to max threads
@@ -23,13 +24,14 @@ public class ThreadedSort {
 			int [] sortedArr = new int[arrSize];
 			
 			//continue working while sort isn't done
-			while (control.freeThreads() > 0 && !control.isDone())
+			while (control.freeThreads() > 0 || !control.isDone())
 			{
 				control.waitForThread(); //wait for free thread
 				MergeSort thread = new MergeSort(control.getItem(),control.getItem(), control);
 				thread.start();
+				System.out.println(control.toString());
 			}
-			
+			System.out.println("out of while");
 			control.waitForAll(); //wait for all threads to finish
 			return sortedArr;
 		}

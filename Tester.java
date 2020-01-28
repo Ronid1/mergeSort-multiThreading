@@ -11,7 +11,7 @@ public class Tester{
 	public static void runTest()
 	{
 		//sort up to 100 ints with up to arry.leangth() threads
-		 Random random = new Random (100);
+		 Random random = new Random ();
 		 int size = random.nextInt(100);
 		 int threadMax = random.nextInt(size);
 
@@ -23,8 +23,10 @@ public class Tester{
 		 for (int i = 0; i < size; i++)
 		 {
 			 arr[i] = random.nextInt(100);
-			 System.out.print(arr[i] + "\t");
+			 System.out.print(arr[i] + " ");
 		 }
+		 
+		 System.out.println("\nusing " +threadMax + " threads");
 		 
 		 ThreadedSort sort = new ThreadedSort(threadMax, arr);
 		 sort.threadedMerge();
@@ -32,7 +34,7 @@ public class Tester{
 		 System.out.println("Array after merge sort:");
 		 
 		 for (int i = 0; i < size; i++)
-			 System.out.print(arr[i] + "\t");
+			 System.out.print(arr[i] + " ");
 	}
 
 }
