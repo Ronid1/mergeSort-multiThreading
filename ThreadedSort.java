@@ -1,12 +1,22 @@
+/*
+ * This class implements multi threaded merge sort for an array of ints.
+ * 
+ * @param n = size of array to be sorted
+ * @param m = number of treads used
+ * 
+ * Algorithm:
+ * break array into n sub arrays and add to pool.
+ * for each thread m, take 2 sub arrays from pool and merge them.
+ * add merged array back to pool.
+ * Algorithm ends when there is only one array in the pool.
+ */
 
 public class ThreadedSort {
 	
-	private int arrSize;
 	private Control control;
 	
 	public ThreadedSort(int max, int[] a)
 	{
-		arrSize = a.length;
 		control = new Control(max);
 		
 		//break array into n arrays of size 1, and add all to the pool
@@ -15,25 +25,24 @@ public class ThreadedSort {
 			Integer [] temp = {x};
 			control.add(temp);
 		}
-		System.out.println(control.toString());
 	}
 	
 	//work for each thread, up to max threads
-		public synchronized int[] threadedMerge()
+		public synchronized Integer[] threadedMerge()
 		{	
-			int [] sortedArr = new int[arrSize];
-			
 			//continue working while sort isn't done
-			while (control.freeThreads() > 0 || !control.isDone())
+			while (!control.isDone())
 			{
 				control.waitForThread(); //wait for free thread
 				MergeSort thread = new MergeSort(control.getItem(),control.getItem(), control);
 				thread.start();
 				System.out.println(control.toString());
 			}
-			System.out.println("out of while");
+			
 			control.waitForAll(); //wait for all threads to finish
-			return sortedArr;
+			
+			System.out.println(control.toString());
+			return control.toArray();
 		}
 
 }

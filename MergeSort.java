@@ -1,15 +1,3 @@
-/*
- * This class implements multi threaded merge sort for an array of ints.
- * 
- * @param n = size of array to be sorted
- * @param m = number of treads used
- * 
- * Algorithm:
- * break array into n sub arrays and add to pool.
- * for each thread m, take 2 sub arrays from pool and merge them.
- * add merged array back to pool.
- * Algorithm ends when there is only one array in the pool.
- */
 public class MergeSort extends Thread {
 	
 	private Control control;
@@ -25,8 +13,8 @@ public class MergeSort extends Thread {
 	//override
 	public void run()
 	{
-		control.add(merge());
-		control.finishedTask();
+		control.add(merge()); // merge
+		control.finishedTask(); // notify control
 	}
 	
 	

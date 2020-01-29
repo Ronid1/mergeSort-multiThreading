@@ -14,6 +14,9 @@ public class Tester{
 		 Random random = new Random ();
 		 int size = random.nextInt(100);
 		 int threadMax = random.nextInt(size);
+		 
+		 while(threadMax == 0) //make sure number of threads > 0
+			 threadMax = random.nextInt(size);
 
 		 int[] arr = new int [size];
 		 
@@ -26,15 +29,16 @@ public class Tester{
 			 System.out.print(arr[i] + " ");
 		 }
 		 
-		 System.out.println("\nusing " +threadMax + " threads");
+		 System.out.println("\n\nusing " +threadMax + " threads");
 		 
 		 ThreadedSort sort = new ThreadedSort(threadMax, arr);
-		 sort.threadedMerge();
+		  
+		 Integer[] sortedArr = sort.threadedMerge();
 		 
-		 System.out.println("Array after merge sort:");
+		 System.out.println("\nArray after merge sort:");
 		 
-		 for (int i = 0; i < size; i++)
-			 System.out.print(arr[i] + " ");
+		 for (int i = 0; i < sortedArr.length; i++)
+			 System.out.print(sortedArr[i] + " ");
 	}
 
 }

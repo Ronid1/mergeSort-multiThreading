@@ -1,3 +1,7 @@
+/*
+ * This class represents a control for multi threaded merge sort
+ */
+
 import java.util.ArrayList;
 
 public class Control {
@@ -51,16 +55,10 @@ public class Control {
 		return maxThreads - threadCnt;
 	}
 	
-	/*public void addThread()
-	{
-		//new thread
-		threadCnt++;
-	}*/
-	
 	//wait for an unused thread
 	public void waitForThread()
 	{
-		while (threadCnt == maxThreads)
+		while (freeThreads() == 0)
 		{
 			try {
 				wait();
@@ -81,7 +79,6 @@ public class Control {
 			}
 			catch (InterruptedException e) {}
 		}
-		System.out.println("done wait for all");
 	}
 	
 	//one thread finished its task
@@ -91,6 +88,12 @@ public class Control {
 		notifyAll();
 	}
 	
+	public Integer[] toArray()
+	{	
+		return pool.get(0);
+	}
+	
+	//for debugging
 	public String toString()
 	{
 		String s = "";
