@@ -4,7 +4,7 @@
 
 import java.util.ArrayList;
 
-public class Control {
+public class Control{
 	
 	private ArrayList <Integer[]> pool;
 	private int maxThreads;
@@ -20,18 +20,24 @@ public class Control {
 	}
 	
 	// add an array to the pool
-	public synchronized void add(Integer[] a)
+	public void add(Integer[] a)
 	{
 		pool.add(a);
 	}
 	
 	//get first item from pool
-	public synchronized Integer [] getItem()
+	public Integer [] getItem()
 	{
 		if (pool.size() > 0)
 			return pool.remove(0);
 		
 		return null;
+	}
+	
+	//return array in pool(i)
+	public Integer[] getArray(int i)
+	{
+		return pool.get(i);
 	}
 	
 	//return number of objects in pool
@@ -43,8 +49,11 @@ public class Control {
 	//return true when sort is done
 	public boolean isDone()
 	{
-		if (this.size() == 1 && threadCnt == 0)
+		if (done == false && this.size() == 1 && threadCnt == 0)
+		{
+			System.out.println("DONE" + this.toString());
 			done = true;
+		}
 		
 		return done;
 	}
@@ -56,41 +65,28 @@ public class Control {
 	}
 	
 	//wait for an unused thread
-	public void waitForThread()
+	public synchronized void waitForThread()
 	{
-		while (freeThreads() == 0)
+		while (freeThreads() == 0 || this.size() < 2)
 		{
+			if (this.isDone())
+				return;
+			
 			try {
+				System.out.println("waiting" + this.toString());
 				wait();
 			}
 			catch (InterruptedException e) {}
 		}
 	
-		threadCnt++;
-	}
-
-	//wait for all current threads to finish
-	public void waitForAll()
-	{
-		while (!this.isDone())
-		{
-			try {
-				wait();
-			}
-			catch (InterruptedException e) {}
-		}
+		threadCnt++;		
 	}
 	
 	//one thread finished its task
-	public void finishedTask()
+	public synchronized void finishedTask()
 	{
 		threadCnt--;
 		notifyAll();
-	}
-	
-	public Integer[] toArray()
-	{	
-		return pool.get(0);
 	}
 	
 	//for debugging

@@ -10,7 +10,6 @@ public class MergeSort extends Thread {
 		arr2 = b;
 	}
 	
-	//override
 	public void run()
 	{
 		control.add(merge()); // merge
@@ -48,7 +47,4 @@ public class MergeSort extends Thread {
 		return res;
 	}
 	
-
-	
-
 }

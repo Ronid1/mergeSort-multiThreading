@@ -18,7 +18,6 @@ public class ThreadedSort {
 	public ThreadedSort(int max, int[] a)
 	{
 		control = new Control(max);
-		
 		//break array into n arrays of size 1, and add all to the pool
 		for (Integer x: a)
 		{
@@ -28,21 +27,21 @@ public class ThreadedSort {
 	}
 	
 	//work for each thread, up to max threads
-		public synchronized Integer[] threadedMerge()
-		{	
-			//continue working while sort isn't done
-			while (!control.isDone())
-			{
-				control.waitForThread(); //wait for free thread
-				MergeSort thread = new MergeSort(control.getItem(),control.getItem(), control);
-				thread.start();
-				System.out.println(control.toString());
-			}
+	public synchronized Integer[] threadedMerge()
+	{	
+		//continue working while sort isn't done
+		while (true)
+		{
+			control.waitForThread(); //wait for free thread
 			
-			control.waitForAll(); //wait for all threads to finish
+			if (control.isDone())
+				break;
 			
-			System.out.println(control.toString());
-			return control.toArray();
+			MergeSort thread = new MergeSort(control.getItem(),control.getItem(), control);
+			thread.start();
 		}
+		
+		return control.getArray(0);
+	}
 
 }

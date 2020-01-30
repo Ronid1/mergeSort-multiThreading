@@ -10,10 +10,10 @@ public class Tester{
 	
 	public static void runTest()
 	{
-		//sort up to 100 ints with up to arry.leangth() threads
+		//sort up to 100 ints with up to arry.length() threads
 		 Random random = new Random ();
 		 int size = random.nextInt(100);
-		 int threadMax = random.nextInt(size);
+		 int threadMax = random.nextInt(100);
 		 
 		 while(threadMax == 0) //make sure number of threads > 0
 			 threadMax = random.nextInt(size);
